@@ -8,6 +8,7 @@ import java.util.Arrays;
 public class Main {
 
     static int fuzzySystemNumber=0;
+    static ArrayList<FuzzyLogicSystem> systems = new ArrayList<FuzzyLogicSystem>();
     public static void CreateInitFrame(){
         JFrame frame = new JFrame("Fuzzy Logic");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -114,6 +115,7 @@ public class Main {
 
     public static void main(String[] args) {
         CreateInitFrame();
+
 
     }
 }
