@@ -12,6 +12,17 @@ public class FuzzyLogicSystem {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "FuzzyLogicSystem{" +
+                "name='" + name + '\n' +
+                ", description='" + description + '\n' +
+                ", variables=" + variables + '\n' +
+                ", rules=" + rules + '\n' +
+                ", crispValues=" + crispValues + '\n' +
+                '}';
+    }
+
     public double getMembershipDegreeForCrisp(String targetedVariableName, String targetedSetName){
         for (FuzzyLogicCrispValues crisp : crispValues) {
             if(crisp.variable.name.equals(targetedVariableName)){

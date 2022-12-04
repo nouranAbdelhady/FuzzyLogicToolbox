@@ -159,6 +159,69 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600,300);
 
+        JLabel VariableName = new JLabel("Variable Name:");
+        VariableName.setBounds(20,40,200,30);
+        VariableName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(VariableName);
+
+        JTextField variableName = new JTextField(" ");
+        variableName.setBounds(250,40,200,30);
+        frame.add(variableName);
+
+        JLabel VariableType = new JLabel("Type:");
+        VariableType.setBounds(20,100,200,30);
+        VariableType.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(VariableType);
+
+        ButtonGroup buttonGroup = new ButtonGroup();;
+        JRadioButton inType = new JRadioButton();
+        inType.setText("IN");
+        JRadioButton outType = new JRadioButton();
+        outType.setText("OUT");
+        buttonGroup.add(inType);
+        buttonGroup.add(outType);
+
+        inType.setBounds(230,100,70,30);
+        frame.add(inType);
+        outType.setBounds(350,100,70,30);
+        frame.add(outType);
+
+        JLabel VariableRange = new JLabel("Range:");
+        VariableRange.setBounds(20,160,200,30);
+        VariableRange.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(VariableRange);
+
+        JSpinner lower = new JSpinner();
+        lower.setBounds(230, 160, 50, 40);
+        frame.add(lower);
+
+        JSpinner upper = new JSpinner();
+        upper.setBounds(350, 160, 50, 40);
+        frame.add(upper);
+
+        JButton submit=new JButton("Submit");
+        submit.setBounds(230,220,200,30);
+        submit.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                String variableType = "";
+                if (inType.isSelected()) {
+                    variableType = "IN";
+                }
+                else if (outType.isSelected()) {
+                    variableType = "OUT";
+                }
+                FuzzyLogicVariable newVariable = new FuzzyLogicVariable(variableName.getText(), variableType,(Integer) lower.getValue(),(Integer) upper.getValue());
+                System.out.println(newVariable.toString());
+                thisSystem.variables.add(newVariable);
+                System.out.println("------------------");
+                System.out.println(thisSystem.name);
+                System.out.println(thisSystem.toString());
+                frame.setVisible(false);
+            }
+        });
+        frame.add(submit);
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);

@@ -7,7 +7,7 @@ public class FuzzyLogicVariable {
     int upperRange;
     ArrayList<FuzzyLogicSets> sets = new ArrayList<FuzzyLogicSets>();
 
-    public FuzzyLogicVariable(String name, String type, int lowerRange, int upperRange, ArrayList<FuzzyLogicSets> sets) {
+    public FuzzyLogicVariable(String name, String type, int lowerRange, int upperRange) {
         this.name = name;
         this.type = type;
         this.lowerRange = lowerRange;
