@@ -3,12 +3,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
 
     static int fuzzySystemNumber=0;
     static ArrayList<FuzzyLogicSystem> systems = new ArrayList<FuzzyLogicSystem>();
+    public static FuzzyLogicSystem getSystemByName(String targetedName){
+        for (FuzzyLogicSystem system:systems) {
+            if (system.name.equals(targetedName)){
+                return system;
+            }
+        }
+        return null;
+    }
     public static void CreateInitFrame(){
         JFrame frame = new JFrame("Fuzzy Logic");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,6 +83,8 @@ public class Main {
             public void actionPerformed(ActionEvent e)
             {
                 CreateMainMenu(fuzzySystemNumber,systemName.getText(),systemDescription.getText());
+                FuzzyLogicSystem newSystem = new FuzzyLogicSystem(systemName.getText(),systemDescription.getText());
+                systems.add(newSystem);
                 frame.setVisible(false);
             }
         });
@@ -94,18 +103,98 @@ public class Main {
         JButton addVariables=new JButton("Add Variable");
         addVariables.setBounds(130,50,150,30);
         frame.add(addVariables);
+        addVariables.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CreateVariableFrame(systemName);
+
+            }
+        });
 
         JButton addFuzzySets=new JButton("Add Fuzzy Sets");
         addFuzzySets.setBounds(300,50,150,30);
         frame.add(addFuzzySets);
+        addFuzzySets.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CreateSetFrame(systemName);
+
+            }
+        });
 
         JButton addRules=new JButton("Add Rules");
         addRules.setBounds(130,150,150,30);
         frame.add(addRules);
+        addRules.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CreateRuleFrame(systemName);
+
+            }
+        });
 
         JButton runSimulation=new JButton("Run");
         runSimulation.setBounds(300,150,150,30);
         frame.add(runSimulation);
+        runSimulation.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CreateRunFrame(systemName);
+
+            }
+        });
+
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+        frame.setVisible(true);
+    }
+
+    public static void CreateVariableFrame(String systemName){
+        JFrame frame = new JFrame(systemName+" - Variable");
+        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(600,300);
+
+
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+        frame.setVisible(true);
+    }
+
+    public static void CreateSetFrame(String systemName){
+        JFrame frame = new JFrame(systemName+" - Set");
+        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(600,300);
+
+
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+        frame.setVisible(true);
+    }
+
+    public static void CreateRuleFrame(String systemName){
+        JFrame frame = new JFrame(systemName+" - Rule");
+        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(600,300);
+
+
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+        frame.setVisible(true);
+    }
+
+    public static void CreateRunFrame(String systemName){
+        JFrame frame = new JFrame(systemName+" - Run");
+        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400,650);
+
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
@@ -114,8 +203,9 @@ public class Main {
 
 
     public static void main(String[] args) {
-        //CreateInitFrame();
+        CreateInitFrame();
 
+        /*
         FuzzyLogicSets set1= new FuzzyLogicSets("very_low","TRAP",new ArrayList<Integer>(Arrays.asList(0,0,10,30)));
         FuzzyLogicSets set2= new FuzzyLogicSets("low","TRAP",new ArrayList<Integer>(Arrays.asList(10,30,40,60)));
         FuzzyLogicSets set3= new FuzzyLogicSets("medium","TRAP",new ArrayList<Integer>(Arrays.asList(40,60,70,90)));
@@ -154,5 +244,7 @@ public class Main {
         systems.add(system1);
         system1.Fuzzification();
         system1.Inference();
+
+         */
     }
 }
