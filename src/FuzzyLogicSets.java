@@ -4,6 +4,7 @@ import java.util.Arrays;
 public class FuzzyLogicSets {
     String name;
     String type;
+    //x-coordinates
     ArrayList<Integer> values = new ArrayList<Integer>();
     ArrayList<Integer> y_coordinates;
 

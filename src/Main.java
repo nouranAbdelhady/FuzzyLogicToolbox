@@ -114,8 +114,21 @@ public class Main {
 
 
     public static void main(String[] args) {
-        CreateInitFrame();
+        //CreateInitFrame();
 
+        FuzzyLogicSets set1= new FuzzyLogicSets("very_low","TRAP",new ArrayList<Integer>(Arrays.asList(0,0,10,30)));
+        FuzzyLogicSets set2= new FuzzyLogicSets("low","TRAP",new ArrayList<Integer>(Arrays.asList(10,30,40,60)));
+        FuzzyLogicSets set3= new FuzzyLogicSets("medium","TRAP",new ArrayList<Integer>(Arrays.asList(40,60,70,90)));
+        FuzzyLogicSets set4= new FuzzyLogicSets("high","TRAP",new ArrayList<Integer>(Arrays.asList(70,90,100,100)));
+        ArrayList<FuzzyLogicSets> sets = new ArrayList<FuzzyLogicSets>(Arrays.asList(set1,set2,set3,set4));
+        FuzzyLogicVariable variable1 = new FuzzyLogicVariable("proj_funding","IN",0,100,sets);
+        FuzzyLogicCrispValues crips1 = new FuzzyLogicCrispValues(variable1,50);
 
+        FuzzyLogicSystem system1 = new FuzzyLogicSystem("System 1","Des 1");
+        system1.variables.add(variable1);
+        system1.crispValues.add(crips1);
+        systems.add(system1);
+
+        system1.Fuzzification();
     }
 }
