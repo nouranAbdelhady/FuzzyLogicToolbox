@@ -12,13 +12,24 @@ public class FuzzyLogicSystem {
         this.description = description;
     }
 
+    public double getMembershipDegreeForCrisp(String targetedVariableName, String targetedSetName){
+        for (FuzzyLogicCrispValues crisp : crispValues) {
+            if(crisp.variable.name.equals(targetedVariableName)){
+                return crisp.getMembershipDegree(targetedSetName);
+            }
+        }
+        return  -1.0; //not found
+    }
+
     public void Fuzzification(){
+        System.out.print("Fuzzification ");
         //Loop on each Crisp Value
         for (FuzzyLogicCrispValues crisp : crispValues) {
             FuzzyLogicVariable crispVariable = crisp.variable;
+            //System.out.println(crispVariable.name);
             //Loop on sets for the crisp values and see which sets it breaks
             for (int i = 0; i < crispVariable.sets.size(); i++) {
-                System.out.println("Set: "+crispVariable.sets.get(i).name);
+                //System.out.println("\tSet: "+crispVariable.sets.get(i).name);
                 //check if it is in range (>=first and <=last)
                 if(crisp.value >= crispVariable.sets.get(i).values.get(0)   //first element
                     && crisp.value <= crispVariable.sets.get(i).values.get(crispVariable.sets.get(i).values.size()-1)){ //last element
@@ -58,12 +69,52 @@ public class FuzzyLogicSystem {
                     crisp.membershipDegree.add(0.0);
                     crisp.sets_name.add(crispVariable.sets.get(i).name);
                 }
-                System.out.println("membershipDegree: "+crisp.membershipDegree.get(i));
+                //System.out.println("\tmembership degree: "+crisp.membershipDegree.get(i));
             }
         }
+        System.out.println("=> done ");
     }
     public void Inference(){
+        //System.out.print("Inference ");
+        //Loop over each rule
+        for (FuzzyLogicRule rule : rules) {
+            //loop over operators
+            int i=0;
+            for (String operator : rule.operators) {        //AND/OR
+                //get 2 terms (of this operation) => 1 operator works on only 2 terms
+                FuzzyLogicRule.InputRule term1 = rule.InputRules.get(i);
+                FuzzyLogicRule.InputRule term2 = rule.InputRules.get(i+1);
+                i+=2;
+                System.out.println(term1.variable.name+"."+term1.targetedSet+" "+operator+" "+term2.variable.name+"."+term2.targetedSet);
 
+                double term1MembershipDegree= getMembershipDegreeForCrisp(term1.variable.name,term1.targetedSet);
+                double term2MembershipDegree=getMembershipDegreeForCrisp(term2.variable.name,term2.targetedSet);
+                System.out.println("Term 1: "+term1MembershipDegree);
+                System.out.println("Term 2: "+term2MembershipDegree);
+
+                //if any of the terms is negated => (1-x)
+                if(term1.notPresent){
+                    System.out.println("Term 1 negated");
+                    term1MembershipDegree=(1-term1MembershipDegree);
+                }
+                if(term2.notPresent){
+                    System.out.println("Term 2 negated");
+                    term2MembershipDegree=(1-term2MembershipDegree);
+                }
+
+                //perform operation
+                if(operator.equals("OR")||operator.equals("or"))        //OR => get maximum
+                {
+                    rule.calculatedOutput=Math.max(term1MembershipDegree, term2MembershipDegree);
+                }
+                else{ //AND => get minimum
+                    rule.calculatedOutput=Math.min(term1MembershipDegree, term2MembershipDegree);
+                }
+                System.out.println("Final Output: "+rule.calculatedOutput);
+            }
+        }
+
+        //System.out.println("=> done ");
     }
     public void Defuzzification(){
 

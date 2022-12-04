@@ -127,8 +127,32 @@ public class Main {
         FuzzyLogicSystem system1 = new FuzzyLogicSystem("System 1","Des 1");
         system1.variables.add(variable1);
         system1.crispValues.add(crips1);
-        systems.add(system1);
 
+        FuzzyLogicSets set11= new FuzzyLogicSets("low","TRI",new ArrayList<Integer>(Arrays.asList(0,25,50)));
+        FuzzyLogicSets set22= new FuzzyLogicSets("normal","TRI",new ArrayList<Integer>(Arrays.asList(25,50,75)));
+        FuzzyLogicSets set33= new FuzzyLogicSets("high","TRI",new ArrayList<Integer>(Arrays.asList(50,100,100)));
+        ArrayList<FuzzyLogicSets> sets1 = new ArrayList<FuzzyLogicSets>(Arrays.asList(set11,set22,set33));
+        FuzzyLogicVariable variable2 = new FuzzyLogicVariable("risk","OUT",0,100,sets1);
+        system1.variables.add(variable2);
+
+        FuzzyLogicSets set12= new FuzzyLogicSets("beginner","TRI",new ArrayList<Integer>(Arrays.asList(0,15,30)));
+        FuzzyLogicSets set23= new FuzzyLogicSets("intermediate","TRI",new ArrayList<Integer>(Arrays.asList(15,30,45)));
+        FuzzyLogicSets set34= new FuzzyLogicSets("expert","TRI",new ArrayList<Integer>(Arrays.asList(30,60,60)));
+        ArrayList<FuzzyLogicSets> sets2 = new ArrayList<FuzzyLogicSets>(Arrays.asList(set12,set23,set34));
+        FuzzyLogicVariable variable3 = new FuzzyLogicVariable("exp_level","IN",0,60,sets2);
+        system1.variables.add(variable3);
+        FuzzyLogicCrispValues crips2 = new FuzzyLogicCrispValues(variable3,40);
+        system1.crispValues.add(crips2);
+
+        FuzzyLogicRule.InputRule subrule1 = new FuzzyLogicRule.InputRule(variable1,"high",false);
+        FuzzyLogicRule.InputRule subrule2 = new FuzzyLogicRule.InputRule(variable3,"expert",false);
+
+        FuzzyLogicRule.InputRule subrule3 = new FuzzyLogicRule.InputRule(variable1,"medium",false);
+        FuzzyLogicRule.InputRule subrule4 = new FuzzyLogicRule.InputRule(variable3,"beginner",true);
+        FuzzyLogicRule rule1 = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule1,subrule2,subrule3,subrule4)),new ArrayList(Arrays.asList("OR","AND")),variable2,"low");
+        system1.rules.add(rule1);
+        systems.add(system1);
         system1.Fuzzification();
+        system1.Inference();
     }
 }
