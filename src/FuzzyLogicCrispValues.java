@@ -19,4 +19,14 @@ public class FuzzyLogicCrispValues {
         }
         return -1.0;  //not found
     }
+
+    @Override
+    public String toString() {
+        return "FuzzyLogicCrispValues{" +'\n'+
+                "variable=" + variable +'\n'+
+                ", value=" + value +'\n'+
+                ", membershipDegree=" + membershipDegree +'\n'+
+                ", sets_name=" + sets_name +'\n'+
+                '}';
+    }
 }

@@ -20,7 +20,7 @@ public class FuzzyLogicSystem {
                 ", variables=" + variables + '\n' +
                 ", rules=" + rules + '\n' +
                 ", crispValues=" + crispValues + '\n' +
-                '}';
+                '}'+ '\n' +'\n';
     }
 
     public double getMembershipDegreeForCrisp(String targetedVariableName, String targetedSetName){

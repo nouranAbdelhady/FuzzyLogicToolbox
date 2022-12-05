@@ -489,22 +489,14 @@ public class Main {
         variableList1.setBounds(180,40,200,30);
         frame.add(variableList1);
 
-        JLabel SetName = new JLabel("Set:");
-        SetName.setBounds(20,100,200,30);
-        SetName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        frame.add(SetName);
 
-        JTextField tageretdSet1 = new JTextField("");
-        tageretdSet1.setBounds(180,100,200,30);
-        frame.add(tageretdSet1);
-
-        JLabel OutputValue = new JLabel("Output Value:");
-        OutputValue.setBounds(20,160,200,30);
+        JLabel OutputValue = new JLabel("Crisp Value:");
+        OutputValue.setBounds(20,100,200,30);
         OutputValue.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         frame.add(OutputValue);
 
         JTextField outputValue = new JTextField("");
-        outputValue.setBounds(180,160,200,30);
+        outputValue.setBounds(180,100,200,30);
         frame.add(outputValue);
 
         JButton runButton=new JButton("Run");
@@ -513,13 +505,26 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
+                if(!outputValue.getText().equals("")){
+                    FuzzyLogicVariable cripsVariable=null;
+
+                    //get variables from name
+                    for (int i = 0; i < thisSystem.variables.size(); i++) {
+                        if(thisSystem.variables.get(i).name.equals(variableList1.getSelectedItem().toString())){
+                            cripsVariable= thisSystem.variables.get(i);
+                        }
+                    }
+                    FuzzyLogicCrispValues newCrisp = new FuzzyLogicCrispValues(cripsVariable,Integer.parseInt(outputValue.getText()));
+                    thisSystem.crispValues.add(newCrisp);
+                    addedCrisp=true;
+                    System.out.println(thisSystem.toString());
+                }
                 if(addedVariable&&addedSet&&addedRule&&addedCrisp){
                     CreateRunFrame(systemName);
                 }
                 else{
                     CreateErrorFrame();
                 }
-                addedCrisp=true;
                 frame.setVisible(false);
             }
         });
@@ -531,6 +536,20 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
+                if(!outputValue.getText().equals("")){
+                    FuzzyLogicVariable cripsVariable=null;
+
+                    //get variables from name
+                    for (int i = 0; i < thisSystem.variables.size(); i++) {
+                        if(thisSystem.variables.get(i).name.equals(variableList1.getSelectedItem().toString())){
+                            cripsVariable= thisSystem.variables.get(i);
+                        }
+                    }
+                    FuzzyLogicCrispValues newCrisp = new FuzzyLogicCrispValues(cripsVariable,Integer.parseInt(outputValue.getText()));
+                    thisSystem.crispValues.add(newCrisp);
+                    addedCrisp=true;
+                    System.out.println(thisSystem.toString());
+                }
                 CreateCrispFrame(systemName);
                 frame.setVisible(false);
             }
