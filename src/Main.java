@@ -567,6 +567,32 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400,650);
 
+        //Fuzzification
+        JLabel Fuzzification = new JLabel(thisSystem.Fuzzification());
+        Fuzzification.setBounds(45,100,200,30);
+        Fuzzification.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(Fuzzification);
+
+        //Inference
+        JLabel Inference = new JLabel(thisSystem.Inference());
+        Inference.setBounds(45,150,200,30);
+        Inference.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(Inference);
+
+        //Defuzzification
+        JLabel Defuzzification = new JLabel(thisSystem.Defuzzification());
+        Defuzzification.setBounds(45,200,200,30);
+        Defuzzification.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(Defuzzification);
+
+        //OUTPUT
+        JLabel dashedLine = new JLabel("------------------------------------------");
+        dashedLine.setBounds(100,310,200,30);
+        dashedLine.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(dashedLine);
+
+        System.out.println("Final: ");
+        System.out.println(thisSystem.toString());
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);

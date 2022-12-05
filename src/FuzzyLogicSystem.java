@@ -32,7 +32,8 @@ public class FuzzyLogicSystem {
         return  -1.0; //not found
     }
 
-    public void Fuzzification(){
+    public String Fuzzification(){
+        String returnString="Fuzzification";
         System.out.print("Fuzzification ");
         //Loop on each Crisp Value
         for (FuzzyLogicCrispValues crisp : crispValues) {
@@ -84,8 +85,11 @@ public class FuzzyLogicSystem {
             }
         }
         System.out.println("=> done ");
+        returnString+="=> done ";
+        return returnString;
     }
-    public void Inference(){
+    public String Inference(){
+        String returnString="Inference ";
         //System.out.print("Inference ");
         //Loop over each rule
         for (FuzzyLogicRule rule : rules) {
@@ -110,7 +114,7 @@ public class FuzzyLogicSystem {
                 }
                 if(term2.notPresent){
                     System.out.println("Term 2 negated");
-                    term2MembershipDegree=(1-term2MembershipDegree);
+                    term2MembershipDegree=(1.0-term2MembershipDegree);
                 }
 
                 //perform operation
@@ -125,10 +129,18 @@ public class FuzzyLogicSystem {
             }
         }
 
+        returnString+="=> done";
+        return returnString;
         //System.out.println("=> done ");
     }
-    public void Defuzzification(){
+    public String Defuzzification(){
+        String returnString="Defuzzification ";
 
+
+
+
+        returnString+="=> done";
+        return returnString;
     }
 
     public void Run(){
