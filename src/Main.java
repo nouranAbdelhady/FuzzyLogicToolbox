@@ -144,8 +144,7 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
-                CreateRunFrame(systemName);
-
+                CreateCrispFrame(systemName);
             }
         });
 
@@ -165,7 +164,7 @@ public class Main {
         VariableName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         frame.add(VariableName);
 
-        JTextField variableName = new JTextField(" ");
+        JTextField variableName = new JTextField("");
         variableName.setBounds(250,40,200,30);
         frame.add(variableName);
 
@@ -214,9 +213,7 @@ public class Main {
                     variableType = "OUT";
                 }
                 FuzzyLogicVariable newVariable = new FuzzyLogicVariable(variableName.getText(), variableType,(Integer) lower.getValue(),(Integer) upper.getValue());
-                System.out.println(newVariable.toString());
                 thisSystem.variables.add(newVariable);
-                System.out.println("------------------");
                 System.out.println(thisSystem.toString());
                 frame.setVisible(false);
             }
@@ -320,8 +317,8 @@ public class Main {
                     if(thisSystem.variables.get(i).name.equals(dropdownlist.getSelectedItem().toString())){
                         thisSystem.variables.get(i).sets.add(newSet);
                     }
-
                 }
+                System.out.println(thisSystem.toString());
                 frame.setVisible(false);
             }
         });
@@ -336,8 +333,199 @@ public class Main {
         JFrame frame = new JFrame(systemName+" - Rule");
         FuzzyLogicSystem thisSystem = getSystemByName(systemName);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(600,700);
+
+        JLabel RuleName = new JLabel("Rule Name:");
+        RuleName.setBounds(20,10,200,30);
+        RuleName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(RuleName);
+        JTextField ruleName = new JTextField("");
+        ruleName.setBounds(200,10,250,30);
+        frame.add(ruleName);
+
+        //1ST TERM
+        // array of variable names to add to the dropdown list
+        String variableNamesInput[] = new String[thisSystem.variables.size()];
+        String variableNamesOutput[] = new String[thisSystem.variables.size()];
+        int inCount=0,outCount=0;
+        for (int i = 0; i < thisSystem.variables.size(); i++) {
+            if(thisSystem.variables.get(i).type.equals("IN")){
+                variableNamesInput[inCount]=thisSystem.variables.get(i).name;
+                inCount++;
+            }
+            else{
+                variableNamesOutput[outCount]=thisSystem.variables.get(i).name;
+                outCount++;
+            }
+        }
+        JComboBox variableList1 = new JComboBox(variableNamesInput);
+        variableList1.setBounds(20,80,200,30);
+        frame.add(variableList1);
+
+        JTextField tageretdSet1 = new JTextField("");
+        tageretdSet1.setBounds(270,80,200,30);
+        frame.add(tageretdSet1);
+
+        ButtonGroup buttonGroupNot1 = new ButtonGroup();;
+        JRadioButton NOT1 = new JRadioButton();
+        NOT1.setText("NOT");
+        buttonGroupNot1.add(NOT1);
+        NOT1.setBounds(500,80,70,30);
+        frame.add(NOT1);
+
+        ButtonGroup buttonGroupOperator1 = new ButtonGroup();;
+        JRadioButton OR1 = new JRadioButton();
+        OR1.setText("OR");
+        JRadioButton AND1 = new JRadioButton();
+        AND1.setText("AND");
+        buttonGroupOperator1.add(OR1);
+        buttonGroupOperator1.add(AND1);
+        OR1.setBounds(200,130,70,30);
+        frame.add(OR1);
+        AND1.setBounds(290,130,70,30);
+        frame.add(AND1);
+
+        //2ND TERM
+        JComboBox variableList2 = new JComboBox(variableNamesInput);
+        variableList2.setBounds(20,180,200,30);
+        frame.add(variableList2);
+
+        JTextField tageretdSet2 = new JTextField("");
+        tageretdSet2.setBounds(270,180,200,30);
+        frame.add(tageretdSet2);
+
+        ButtonGroup buttonGroupNot2 = new ButtonGroup();;
+        JRadioButton NOT2 = new JRadioButton();
+        NOT2.setText("NOT");
+        buttonGroupNot2.add(NOT2);
+        NOT2.setBounds(500,180,70,30);
+        frame.add(NOT2);
+
+
+        //OUTPUT TERM
+        JLabel dashedLine = new JLabel("--------------------------------------------------------------------");
+        dashedLine.setBounds(200,280,200,30);
+        dashedLine.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(dashedLine);
+
+        JComboBox outputList = new JComboBox(variableNamesOutput);
+        outputList.setBounds(50,400,200,30);
+        frame.add(outputList);
+
+        JTextField outputSet = new JTextField("");
+        outputSet.setBounds(300,400,200,30);
+        frame.add(outputSet);
+
+        JButton submit=new JButton("Submit");
+        submit.setBounds(350,500,200,30);
+        submit.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                FuzzyLogicVariable variable1=null;
+                FuzzyLogicVariable variable2=null;
+                FuzzyLogicVariable outputVariable=null;
+                //get variables from name
+                for (int i = 0; i < thisSystem.variables.size(); i++) {
+                    if(thisSystem.variables.get(i).name.equals(variableList1.getSelectedItem().toString())){
+                       variable1= thisSystem.variables.get(i);
+                    }
+                    if(thisSystem.variables.get(i).name.equals(variableList2.getSelectedItem().toString())){
+                        variable2= thisSystem.variables.get(i);
+                    }
+                    if(thisSystem.variables.get(i).name.equals(outputList.getSelectedItem().toString())){
+                        outputVariable= thisSystem.variables.get(i);
+                    }
+                }
+                FuzzyLogicRule.InputRule subrule1 = new FuzzyLogicRule.InputRule(variable1,tageretdSet1.getText(),NOT1.isSelected());
+                FuzzyLogicRule.InputRule subrule2 = new FuzzyLogicRule.InputRule(variable2,tageretdSet2.getText(),NOT2.isSelected());
+
+                String operatorType = "";
+                if (AND1.isSelected()) {
+                    operatorType = "AND";
+                }
+                else if (OR1.isSelected()) {
+                    operatorType = "OR";
+                }
+
+                FuzzyLogicRule newRule = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule1,subrule2)),new ArrayList(Arrays.asList(operatorType)),outputVariable,outputSet.getText());
+                thisSystem.rules.add(newRule);
+                System.out.println(thisSystem.toString());
+                frame.setVisible(false);
+            }
+        });
+        frame.add(submit);
+
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+        frame.setVisible(true);
+    }
+
+    public static void CreateCrispFrame(String systemName){
+        JFrame frame = new JFrame(systemName+" - Crisp");
+        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600,300);
 
+        JLabel VariableName = new JLabel("Variable:");
+        VariableName.setBounds(20,40,200,30);
+        VariableName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(VariableName);
+
+        // array of variable names to add to the dropdown list
+        String variableNamesInput[] = new String[thisSystem.variables.size()];
+        int inCount=0,outCount=0;
+        for (int i = 0; i < thisSystem.variables.size(); i++) {
+            if(thisSystem.variables.get(i).type.equals("IN")){
+                variableNamesInput[inCount]=thisSystem.variables.get(i).name;
+                inCount++;
+            }
+        }
+        JComboBox variableList1 = new JComboBox(variableNamesInput);
+        variableList1.setBounds(180,40,200,30);
+        frame.add(variableList1);
+
+        JLabel SetName = new JLabel("Set:");
+        SetName.setBounds(20,100,200,30);
+        SetName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(SetName);
+
+        JTextField tageretdSet1 = new JTextField("");
+        tageretdSet1.setBounds(180,100,200,30);
+        frame.add(tageretdSet1);
+
+        JLabel OutputValue = new JLabel("Output Value:");
+        OutputValue.setBounds(20,160,200,30);
+        OutputValue.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(OutputValue);
+
+        JTextField outputValue = new JTextField("");
+        outputValue.setBounds(180,160,200,30);
+        frame.add(outputValue);
+
+        JButton runButton=new JButton("Run");
+        runButton.setBounds(230,220,150,30);
+        runButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CreateRunFrame(systemName);
+                frame.setVisible(false);
+            }
+        });
+        frame.add(runButton);
+
+        JButton addAnotherCrisp=new JButton("Add");
+        addAnotherCrisp.setBounds(400,220,150,30);
+        addAnotherCrisp.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CreateCrispFrame(systemName);
+                frame.setVisible(false);
+            }
+        });
+        frame.add(addAnotherCrisp);
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
