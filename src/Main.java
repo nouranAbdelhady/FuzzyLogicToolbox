@@ -9,6 +9,7 @@ public class Main {
 
     static int fuzzySystemNumber=0;
     static ArrayList<FuzzyLogicSystem> systems = new ArrayList<FuzzyLogicSystem>();
+    static Boolean addedVariable=false,addedSet=false,addedRule=false,addedCrisp=false;
     public static FuzzyLogicSystem getSystemByName(String targetedName){
         for (FuzzyLogicSystem system:systems) {
             if (system.name.equals(targetedName)){
@@ -214,6 +215,7 @@ public class Main {
                 }
                 FuzzyLogicVariable newVariable = new FuzzyLogicVariable(variableName.getText(), variableType,(Integer) lower.getValue(),(Integer) upper.getValue());
                 thisSystem.variables.add(newVariable);
+                addedVariable=true;
                 System.out.println(thisSystem.toString());
                 frame.setVisible(false);
             }
@@ -318,6 +320,7 @@ public class Main {
                         thisSystem.variables.get(i).sets.add(newSet);
                     }
                 }
+                addedSet=true;
                 System.out.println(thisSystem.toString());
                 frame.setVisible(false);
             }
@@ -451,6 +454,7 @@ public class Main {
                 FuzzyLogicRule newRule = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule1,subrule2)),new ArrayList(Arrays.asList(operatorType)),outputVariable,outputSet.getText());
                 thisSystem.rules.add(newRule);
                 System.out.println(thisSystem.toString());
+                addedRule=true;
                 frame.setVisible(false);
             }
         });
@@ -509,7 +513,13 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
-                CreateRunFrame(systemName);
+                if(addedVariable&&addedSet&&addedRule&&addedCrisp){
+                    CreateRunFrame(systemName);
+                }
+                else{
+                    CreateErrorFrame();
+                }
+                addedCrisp=true;
                 frame.setVisible(false);
             }
         });
@@ -538,6 +548,27 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400,650);
 
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
+        frame.setVisible(true);
+    }
+
+    public static void CreateErrorFrame(){
+        JFrame frame = new JFrame("Error!");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400,200);
+
+        String errorMessage="CAN’T START THE SIMULATION!";
+        JLabel ErrorMessage = new JLabel(errorMessage);
+        ErrorMessage.setBounds(70,40,250,50);
+        ErrorMessage.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        frame.add(ErrorMessage);
+
+        String errorMessage2="Please add missing requirements ";
+        ErrorMessage = new JLabel(errorMessage2);
+        ErrorMessage.setBounds(85,70,250,50);
+        ErrorMessage.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        frame.add(ErrorMessage);
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
