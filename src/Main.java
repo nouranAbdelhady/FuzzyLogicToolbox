@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
 
@@ -63,7 +64,7 @@ public class Main {
         SystemName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         frame.add(SystemName);
 
-        JTextField systemName = new JTextField(" ");
+        JTextField systemName = new JTextField("");
         systemName.setBounds(250,40,200,30);
         frame.add(systemName);
 
@@ -72,7 +73,7 @@ public class Main {
         SystemDescription.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         frame.add(SystemDescription);
 
-        JTextField systemDescription = new JTextField(" ");
+        JTextField systemDescription = new JTextField("");
         systemDescription.setBounds(250,80,250,50);
         frame.add(systemDescription);
 
@@ -216,7 +217,6 @@ public class Main {
                 System.out.println(newVariable.toString());
                 thisSystem.variables.add(newVariable);
                 System.out.println("------------------");
-                System.out.println(thisSystem.name);
                 System.out.println(thisSystem.toString());
                 frame.setVisible(false);
             }
@@ -234,6 +234,98 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600,300);
 
+        JLabel label = new JLabel("Variable:");
+        label.setBounds(20,40,200,30);
+        label.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(label);
+
+        // array of variable names to add to the dropdown list
+        String variableNames[] = new String[thisSystem.variables.size()];
+        for (int i = 0; i < thisSystem.variables.size(); i++) {
+            variableNames[i]=thisSystem.variables.get(i).name;
+        }
+
+        // create checkbox
+        JComboBox dropdownlist = new JComboBox(variableNames);
+        dropdownlist.setBounds(250,40,200,30);
+        frame.add(dropdownlist);
+
+        JLabel SetName = new JLabel("Set Name:");
+        SetName.setBounds(20,90,200,30);
+        SetName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(SetName);
+
+        JTextField setName = new JTextField("");
+        setName.setBounds(250,90,200,30);
+        frame.add(setName);
+
+        JLabel SetType = new JLabel("Type:");
+        SetType.setBounds(20,130,200,30);
+        SetType.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        frame.add(SetType);
+
+        ButtonGroup buttonGroup = new ButtonGroup();;
+        JRadioButton triType = new JRadioButton();
+        triType.setText("TRI");
+        JRadioButton trapType = new JRadioButton();
+        trapType.setText("TRAP");
+        buttonGroup.add(triType);
+        buttonGroup.add(trapType);
+
+        triType.setBounds(100,130,70,30);
+        frame.add(triType);
+        trapType.setBounds(190,130,70,30);
+        frame.add(trapType);
+
+        JTextField value1 = new JTextField("");
+        value1.setBounds(190,170, 40, 30);
+        frame.add(value1);
+
+        JTextField value2 = new JTextField("");
+        value2.setBounds(240,170, 40, 30);
+        frame.add(value2);
+
+        JTextField value3 = new JTextField("");
+        value3.setBounds(290,170, 40, 30);
+        frame.add(value3);
+
+        JTextField value4 = new JTextField("");
+        value4.setBounds(340,170, 40, 30);
+        frame.add(value4);
+
+        JButton submit=new JButton("Submit");
+        submit.setBounds(230,220,200,30);
+        submit.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                String setType = "";
+                FuzzyLogicSets newSet = null;
+                if (triType.isSelected()) {
+                    setType = "TRI";
+                    //3 values
+                    newSet = new FuzzyLogicSets(setName.getText(),setType,
+                            new ArrayList<Integer>(Arrays.asList(Integer.parseInt(value1.getText()),Integer.parseInt(value2.getText())
+                                    ,Integer.parseInt(value3.getText()))));
+                }
+                else if (trapType.isSelected()) {
+                    setType = "TRAP";
+                    //4 values
+                    newSet= new FuzzyLogicSets(setName.getText(),setType,
+                            new ArrayList<Integer>(Arrays.asList(Integer.parseInt(value1.getText()),Integer.parseInt(value2.getText())
+                                    ,Integer.parseInt(value3.getText()),Integer.parseInt(value4.getText()))));
+                }
+
+                for (int i = 0; i < thisSystem.variables.size(); i++) {
+                    if(thisSystem.variables.get(i).name.equals(dropdownlist.getSelectedItem().toString())){
+                        thisSystem.variables.get(i).sets.add(newSet);
+                    }
+
+                }
+                frame.setVisible(false);
+            }
+        });
+        frame.add(submit);
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
