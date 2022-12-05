@@ -216,7 +216,7 @@ public class Main {
                 FuzzyLogicVariable newVariable = new FuzzyLogicVariable(variableName.getText(), variableType,(Integer) lower.getValue(),(Integer) upper.getValue());
                 thisSystem.variables.add(newVariable);
                 addedVariable=true;
-                System.out.println(thisSystem.toString());
+                //System.out.println(thisSystem.toString());
                 frame.setVisible(false);
             }
         });
@@ -321,7 +321,7 @@ public class Main {
                     }
                 }
                 addedSet=true;
-                System.out.println(thisSystem.toString());
+                //System.out.println(thisSystem.toString());
                 frame.setVisible(false);
             }
         });
@@ -453,7 +453,7 @@ public class Main {
 
                 FuzzyLogicRule newRule = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule1,subrule2)),new ArrayList(Arrays.asList(operatorType)),outputVariable,outputSet.getText());
                 thisSystem.rules.add(newRule);
-                System.out.println(thisSystem.toString());
+                //System.out.println(thisSystem.toString());
                 addedRule=true;
                 frame.setVisible(false);
             }
@@ -517,7 +517,7 @@ public class Main {
                     FuzzyLogicCrispValues newCrisp = new FuzzyLogicCrispValues(cripsVariable,Integer.parseInt(outputValue.getText()));
                     thisSystem.crispValues.add(newCrisp);
                     addedCrisp=true;
-                    System.out.println(thisSystem.toString());
+                    //System.out.println(thisSystem.toString());
                 }
                 if(addedVariable&&addedSet&&addedRule&&addedCrisp){
                     CreateRunFrame(systemName);
@@ -548,7 +548,7 @@ public class Main {
                     FuzzyLogicCrispValues newCrisp = new FuzzyLogicCrispValues(cripsVariable,Integer.parseInt(outputValue.getText()));
                     thisSystem.crispValues.add(newCrisp);
                     addedCrisp=true;
-                    System.out.println(thisSystem.toString());
+                    //System.out.println(thisSystem.toString());
                 }
                 CreateCrispFrame(systemName);
                 frame.setVisible(false);
@@ -592,7 +592,7 @@ public class Main {
         frame.add(dashedLine);
 
         System.out.println("Final: ");
-        System.out.println(thisSystem.toString());
+        //System.out.println(thisSystem.toString());
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -622,15 +622,15 @@ public class Main {
 
 
     public static void main(String[] args) {
-        CreateInitFrame();
+        //CreateInitFrame();
 
-        /*
         FuzzyLogicSets set1= new FuzzyLogicSets("very_low","TRAP",new ArrayList<Integer>(Arrays.asList(0,0,10,30)));
         FuzzyLogicSets set2= new FuzzyLogicSets("low","TRAP",new ArrayList<Integer>(Arrays.asList(10,30,40,60)));
         FuzzyLogicSets set3= new FuzzyLogicSets("medium","TRAP",new ArrayList<Integer>(Arrays.asList(40,60,70,90)));
         FuzzyLogicSets set4= new FuzzyLogicSets("high","TRAP",new ArrayList<Integer>(Arrays.asList(70,90,100,100)));
         ArrayList<FuzzyLogicSets> sets = new ArrayList<FuzzyLogicSets>(Arrays.asList(set1,set2,set3,set4));
-        FuzzyLogicVariable variable1 = new FuzzyLogicVariable("proj_funding","IN",0,100,sets);
+        FuzzyLogicVariable variable1 = new FuzzyLogicVariable("proj_funding","IN",0,100);
+        variable1.sets=sets;
         FuzzyLogicCrispValues crips1 = new FuzzyLogicCrispValues(variable1,50);
 
         FuzzyLogicSystem system1 = new FuzzyLogicSystem("System 1","Des 1");
@@ -641,29 +641,49 @@ public class Main {
         FuzzyLogicSets set22= new FuzzyLogicSets("normal","TRI",new ArrayList<Integer>(Arrays.asList(25,50,75)));
         FuzzyLogicSets set33= new FuzzyLogicSets("high","TRI",new ArrayList<Integer>(Arrays.asList(50,100,100)));
         ArrayList<FuzzyLogicSets> sets1 = new ArrayList<FuzzyLogicSets>(Arrays.asList(set11,set22,set33));
-        FuzzyLogicVariable variable2 = new FuzzyLogicVariable("risk","OUT",0,100,sets1);
+        FuzzyLogicVariable variable2 = new FuzzyLogicVariable("risk","OUT",0,100);
+        variable2.sets=sets1;
         system1.variables.add(variable2);
 
         FuzzyLogicSets set12= new FuzzyLogicSets("beginner","TRI",new ArrayList<Integer>(Arrays.asList(0,15,30)));
         FuzzyLogicSets set23= new FuzzyLogicSets("intermediate","TRI",new ArrayList<Integer>(Arrays.asList(15,30,45)));
         FuzzyLogicSets set34= new FuzzyLogicSets("expert","TRI",new ArrayList<Integer>(Arrays.asList(30,60,60)));
         ArrayList<FuzzyLogicSets> sets2 = new ArrayList<FuzzyLogicSets>(Arrays.asList(set12,set23,set34));
-        FuzzyLogicVariable variable3 = new FuzzyLogicVariable("exp_level","IN",0,60,sets2);
+        FuzzyLogicVariable variable3 = new FuzzyLogicVariable("exp_level","IN",0,60);
+        variable3.sets=sets2;
         system1.variables.add(variable3);
         FuzzyLogicCrispValues crips2 = new FuzzyLogicCrispValues(variable3,40);
         system1.crispValues.add(crips2);
 
-        FuzzyLogicRule.InputRule subrule1 = new FuzzyLogicRule.InputRule(variable1,"high",false);
-        FuzzyLogicRule.InputRule subrule2 = new FuzzyLogicRule.InputRule(variable3,"expert",false);
+        FuzzyLogicRule.InputRule subrule11 = new FuzzyLogicRule.InputRule(variable1,"high",false);
+        FuzzyLogicRule.InputRule subrule21 = new FuzzyLogicRule.InputRule(variable3,"expert",false);
+        FuzzyLogicRule rule1 = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule11,subrule21)),new ArrayList(Arrays.asList("OR")),variable2,"low");
 
-        FuzzyLogicRule.InputRule subrule3 = new FuzzyLogicRule.InputRule(variable1,"medium",false);
-        FuzzyLogicRule.InputRule subrule4 = new FuzzyLogicRule.InputRule(variable3,"beginner",true);
-        FuzzyLogicRule rule1 = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule1,subrule2,subrule3,subrule4)),new ArrayList(Arrays.asList("OR","AND")),variable2,"low");
+        FuzzyLogicRule.InputRule subrule12 = new FuzzyLogicRule.InputRule(variable1,"medium",false);
+        FuzzyLogicRule.InputRule subrule22 = new FuzzyLogicRule.InputRule(variable3,"intermediate",false);
+        FuzzyLogicRule rule2 = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule12,subrule22)),new ArrayList(Arrays.asList("AND")),variable2,"normal");
+
+        FuzzyLogicRule.InputRule subrule13 = new FuzzyLogicRule.InputRule(variable1,"medium",false);
+        FuzzyLogicRule.InputRule subrule23 = new FuzzyLogicRule.InputRule(variable3,"beginner",false);
+        FuzzyLogicRule rule3 = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule13,subrule23)),new ArrayList(Arrays.asList("AND")),variable2,"normal");
+
+        FuzzyLogicRule.InputRule subrule14 = new FuzzyLogicRule.InputRule(variable1,"low",false);
+        FuzzyLogicRule.InputRule subrule24 = new FuzzyLogicRule.InputRule(variable3,"beginner",false);
+        FuzzyLogicRule rule4 = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule14,subrule24)),new ArrayList(Arrays.asList("AND")),variable2,"high");
+
+        FuzzyLogicRule.InputRule subrule15 = new FuzzyLogicRule.InputRule(variable1,"very_low",false);
+        FuzzyLogicRule.InputRule subrule25 = new FuzzyLogicRule.InputRule(variable3,"expert",true);
+        FuzzyLogicRule rule5 = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule15,subrule25)),new ArrayList(Arrays.asList("AND")),variable2,"high");
+
         system1.rules.add(rule1);
+        system1.rules.add(rule2);
+        system1.rules.add(rule3);
+        system1.rules.add(rule4);
+        system1.rules.add(rule5);
         systems.add(system1);
         system1.Fuzzification();
         system1.Inference();
+        system1.Defuzzification();
 
-         */
     }
 }

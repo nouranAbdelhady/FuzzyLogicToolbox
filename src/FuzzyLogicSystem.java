@@ -7,6 +7,9 @@ public class FuzzyLogicSystem {
     ArrayList<FuzzyLogicRule> rules = new ArrayList<FuzzyLogicRule>();
     ArrayList<FuzzyLogicCrispValues> crispValues = new ArrayList<FuzzyLogicCrispValues>();
 
+    double calulatedOutputValue;
+    String outputSet;
+
     public FuzzyLogicSystem(String name, String description) {
         this.name = name;
         this.description = description;
@@ -135,9 +138,36 @@ public class FuzzyLogicSystem {
     }
     public String Defuzzification(){
         String returnString="Defuzzification ";
+        //Calculate weighted average for "OUT" variables ; for EACH set
+        for (FuzzyLogicVariable variable : variables) {
+            if(variable.type.equals("OUT")){
+                for (FuzzyLogicSets set: variable.sets) {
+                    set.calculateWeightedAverage();
+                }
+            }
+        }
 
+        double sumOfOutput=0.0;
+        double numerator=0.0;
+        //Substituting in the weighted average equation
+        for (FuzzyLogicRule rule:rules) {
+            sumOfOutput+=rule.calculatedOutput;
+            for (FuzzyLogicVariable variable : variables) {
+                if(variable.type.equals("OUT")){
+                    for (FuzzyLogicSets set: variable.sets) {
+                        if(rule.outputValue.equals(set.name)){
+                            numerator+=(rule.calculatedOutput*set.weightedAverage);
+                            System.out.println(set.name+":"+rule.calculatedOutput+"*"+set.weightedAverage);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
-
+        System.out.println(numerator+"/"+sumOfOutput);
+        this.calulatedOutputValue=numerator/sumOfOutput;
+        System.out.println("Calculated output: "+this.calulatedOutputValue);
 
         returnString+="=> done";
         return returnString;

@@ -7,7 +7,7 @@ public class FuzzyLogicSets {
     //x-coordinates
     ArrayList<Integer> values = new ArrayList<Integer>();
     ArrayList<Integer> y_coordinates;
-
+    double weightedAverage=0;
     FuzzyLogicSets(String name,String type){
         this.name=name;
         this.type=type;
@@ -32,6 +32,16 @@ public class FuzzyLogicSets {
         }
         this.values=values;
     }
+
+    public void calculateWeightedAverage(){
+        //get sum of values
+        for (double value:values) {
+            weightedAverage+=value;
+        }
+        //get weighted average (sum/count)
+        weightedAverage=weightedAverage/ values.size();
+    }
+
 
     public void addValue(Integer value){
         this.values.add(value);
