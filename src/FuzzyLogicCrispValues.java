@@ -17,6 +17,7 @@ public class FuzzyLogicCrispValues {
                 return membershipDegree.get(i);
             }
         }
+        System.out.println("Couldn't find "+targetedSet);
         return -1.0;  //not found
     }
 

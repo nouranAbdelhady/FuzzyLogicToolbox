@@ -7,8 +7,9 @@ public class FuzzyLogicSystem {
     ArrayList<FuzzyLogicRule> rules = new ArrayList<FuzzyLogicRule>();
     ArrayList<FuzzyLogicCrispValues> crispValues = new ArrayList<FuzzyLogicCrispValues>();
 
-    double calulatedOutputValue;
+    double calculatedOutputValue;
     String outputSet;
+    String outputName=null;
 
     public FuzzyLogicSystem(String name, String description) {
         this.name = name;
@@ -32,10 +33,11 @@ public class FuzzyLogicSystem {
                 return crisp.getMembershipDegree(targetedSetName);
             }
         }
+        System.out.println("Couldn't find "+targetedVariableName);
         return  -1.0; //not found
     }
 
-    public String Fuzzification(){
+    public void Fuzzification(){
         String returnString="Fuzzification";
         System.out.print("Fuzzification ");
         //Loop on each Crisp Value
@@ -89,9 +91,9 @@ public class FuzzyLogicSystem {
         }
         System.out.println("=> done ");
         returnString+="=> done ";
-        return returnString;
+        //return returnString;
     }
-    public String Inference(){
+    public void Inference(){
         String returnString="Inference ";
         //System.out.print("Inference ");
         //Loop over each rule
@@ -105,7 +107,7 @@ public class FuzzyLogicSystem {
                 i+=2;
                 System.out.println(term1.variable.name+"."+term1.targetedSet+" "+operator+" "+term2.variable.name+"."+term2.targetedSet);
 
-                double term1MembershipDegree= getMembershipDegreeForCrisp(term1.variable.name,term1.targetedSet);
+                double term1MembershipDegree=getMembershipDegreeForCrisp(term1.variable.name,term1.targetedSet);
                 double term2MembershipDegree=getMembershipDegreeForCrisp(term2.variable.name,term2.targetedSet);
                 System.out.println("Term 1: "+term1MembershipDegree);
                 System.out.println("Term 2: "+term2MembershipDegree);
@@ -113,11 +115,13 @@ public class FuzzyLogicSystem {
                 //if any of the terms is negated => (1-x)
                 if(term1.notPresent){
                     System.out.println("Term 1 negated");
-                    term1MembershipDegree=(1-term1MembershipDegree);
+                    term1MembershipDegree=(1.0-term1MembershipDegree);
+                    System.out.println(term1MembershipDegree);
                 }
                 if(term2.notPresent){
                     System.out.println("Term 2 negated");
                     term2MembershipDegree=(1.0-term2MembershipDegree);
+                    System.out.println(term2MembershipDegree);
                 }
 
                 //perform operation
@@ -133,10 +137,10 @@ public class FuzzyLogicSystem {
         }
 
         returnString+="=> done";
-        return returnString;
+        //return returnString;
         //System.out.println("=> done ");
     }
-    public String Defuzzification(){
+    public double Defuzzification(){
         String returnString="Defuzzification ";
         //Calculate weighted average for "OUT" variables ; for EACH set
         for (FuzzyLogicVariable variable : variables) {
@@ -156,6 +160,7 @@ public class FuzzyLogicSystem {
                 if(variable.type.equals("OUT")){
                     for (FuzzyLogicSets set: variable.sets) {
                         if(rule.outputValue.equals(set.name)){
+                            this.outputName= variable.name;
                             numerator+=(rule.calculatedOutput*set.weightedAverage);
                             System.out.println(set.name+":"+rule.calculatedOutput+"*"+set.weightedAverage);
                             break;
@@ -166,11 +171,12 @@ public class FuzzyLogicSystem {
         }
 
         System.out.println(numerator+"/"+sumOfOutput);
-        this.calulatedOutputValue=numerator/sumOfOutput;
-        System.out.println("Calculated output: "+this.calulatedOutputValue);
+        this.calculatedOutputValue=numerator/sumOfOutput;
+        System.out.println("Calculated output: "+this.calculatedOutputValue);
 
         returnString+="=> done";
-        return returnString;
+        //return returnString;
+        return this.calculatedOutputValue;
     }
 
     public void Run(){

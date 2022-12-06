@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
-
     static int fuzzySystemNumber=0;
     static ArrayList<FuzzyLogicSystem> systems = new ArrayList<FuzzyLogicSystem>();
     static Boolean addedVariable=false,addedSet=false,addedRule=false,addedCrisp=false;
@@ -70,12 +69,12 @@ public class Main {
         frame.add(systemName);
 
         JLabel SystemDescription = new JLabel("System Description:");
-        SystemDescription.setBounds(20,80,200,30);
+        SystemDescription.setBounds(20,80,200,70);
         SystemDescription.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         frame.add(SystemDescription);
 
         JTextField systemDescription = new JTextField("");
-        systemDescription.setBounds(250,80,250,50);
+        systemDescription.setBounds(250,80,250,90);
         frame.add(systemDescription);
 
         JButton submit=new JButton("Submit");
@@ -350,24 +349,45 @@ public class Main {
         // array of variable names to add to the dropdown list
         String variableNamesInput[] = new String[thisSystem.variables.size()];
         String variableNamesOutput[] = new String[thisSystem.variables.size()];
+        ArrayList<String> setsNamesInputArrayList = new ArrayList<String>();
+        ArrayList<String> setsNamesOutputArrayList = new ArrayList<String>();
         int inCount=0,outCount=0;
+        int inSetCount=0, outSetCount=0;
         for (int i = 0; i < thisSystem.variables.size(); i++) {
             if(thisSystem.variables.get(i).type.equals("IN")){
                 variableNamesInput[inCount]=thisSystem.variables.get(i).name;
+                for (FuzzyLogicSets set: thisSystem.variables.get(i).sets ) {
+                    setsNamesInputArrayList.add(set.name);
+                    inSetCount++;
+                }
                 inCount++;
             }
             else{
                 variableNamesOutput[outCount]=thisSystem.variables.get(i).name;
+                for (FuzzyLogicSets set: thisSystem.variables.get(i).sets ) {
+                    setsNamesOutputArrayList.add(set.name);
+                    outSetCount++;
+                }
                 outCount++;
             }
         }
+
+        String[] setsNamesInput = new String[inSetCount];
+        String[] setsNamesOutput = new String[outSetCount];
+        for (int i = 0; i < inSetCount; i++) {
+            setsNamesInput[i]=setsNamesInputArrayList.get(i);
+        }
+        for (int i = 0; i < outSetCount; i++) {
+            setsNamesOutput[i]=setsNamesOutputArrayList.get(i);
+        }
+
         JComboBox variableList1 = new JComboBox(variableNamesInput);
         variableList1.setBounds(20,80,200,30);
         frame.add(variableList1);
 
-        JTextField tageretdSet1 = new JTextField("");
-        tageretdSet1.setBounds(270,80,200,30);
-        frame.add(tageretdSet1);
+        JComboBox variableSet1 = new JComboBox(setsNamesInput);
+        variableSet1.setBounds(270,80,200,30);
+        frame.add(variableSet1);
 
         ButtonGroup buttonGroupNot1 = new ButtonGroup();;
         JRadioButton NOT1 = new JRadioButton();
@@ -393,9 +413,9 @@ public class Main {
         variableList2.setBounds(20,180,200,30);
         frame.add(variableList2);
 
-        JTextField tageretdSet2 = new JTextField("");
-        tageretdSet2.setBounds(270,180,200,30);
-        frame.add(tageretdSet2);
+        JComboBox variableSet2 = new JComboBox(setsNamesInput);
+        variableSet2.setBounds(270,180,200,30);
+        frame.add(variableSet2);
 
         ButtonGroup buttonGroupNot2 = new ButtonGroup();;
         JRadioButton NOT2 = new JRadioButton();
@@ -403,7 +423,6 @@ public class Main {
         buttonGroupNot2.add(NOT2);
         NOT2.setBounds(500,180,70,30);
         frame.add(NOT2);
-
 
         //OUTPUT TERM
         JLabel dashedLine = new JLabel("--------------------------------------------------------------------");
@@ -415,7 +434,7 @@ public class Main {
         outputList.setBounds(50,400,200,30);
         frame.add(outputList);
 
-        JTextField outputSet = new JTextField("");
+        JComboBox outputSet = new JComboBox(setsNamesOutput);
         outputSet.setBounds(300,400,200,30);
         frame.add(outputSet);
 
@@ -440,8 +459,8 @@ public class Main {
                         outputVariable= thisSystem.variables.get(i);
                     }
                 }
-                FuzzyLogicRule.InputRule subrule1 = new FuzzyLogicRule.InputRule(variable1,tageretdSet1.getText(),NOT1.isSelected());
-                FuzzyLogicRule.InputRule subrule2 = new FuzzyLogicRule.InputRule(variable2,tageretdSet2.getText(),NOT2.isSelected());
+                FuzzyLogicRule.InputRule subrule1 = new FuzzyLogicRule.InputRule(variable1,variableSet1.getSelectedItem().toString(),NOT1.isSelected());
+                FuzzyLogicRule.InputRule subrule2 = new FuzzyLogicRule.InputRule(variable2,variableSet2.getSelectedItem().toString(),NOT2.isSelected());
 
                 String operatorType = "";
                 if (AND1.isSelected()) {
@@ -451,7 +470,7 @@ public class Main {
                     operatorType = "OR";
                 }
 
-                FuzzyLogicRule newRule = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule1,subrule2)),new ArrayList(Arrays.asList(operatorType)),outputVariable,outputSet.getText());
+                FuzzyLogicRule newRule = new FuzzyLogicRule(new ArrayList(Arrays.asList(subrule1,subrule2)),new ArrayList(Arrays.asList(operatorType)),outputVariable,outputSet.getSelectedItem().toString());
                 thisSystem.rules.add(newRule);
                 //System.out.println(thisSystem.toString());
                 addedRule=true;
@@ -459,7 +478,6 @@ public class Main {
             }
         });
         frame.add(submit);
-
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -565,34 +583,21 @@ public class Main {
         JFrame frame = new JFrame(systemName+" - Run");
         FuzzyLogicSystem thisSystem = getSystemByName(systemName);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400,650);
+        frame.setSize(500,200);
 
-        //Fuzzification
-        JLabel Fuzzification = new JLabel(thisSystem.Fuzzification());
-        Fuzzification.setBounds(45,100,200,30);
-        Fuzzification.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        frame.add(Fuzzification);
+        thisSystem.Run();
 
-        //Inference
-        JLabel Inference = new JLabel(thisSystem.Inference());
-        Inference.setBounds(45,150,200,30);
-        Inference.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        frame.add(Inference);
+        String outputMessage="Predicted ";
+        outputMessage+=thisSystem.outputName;
+        //outputMessage=outputMessage+" is "+thisSystem.outputSet;
+        outputMessage=outputMessage+": "+thisSystem.calculatedOutputValue;
+        JLabel OutputMessage = new JLabel(outputMessage);
+        OutputMessage.setBounds(100,55,250,130);
+        OutputMessage.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        frame.add(OutputMessage);
 
-        //Defuzzification
-        JLabel Defuzzification = new JLabel(thisSystem.Defuzzification());
-        Defuzzification.setBounds(45,200,200,30);
-        Defuzzification.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        frame.add(Defuzzification);
-
-        //OUTPUT
-        JLabel dashedLine = new JLabel("------------------------------------------");
-        dashedLine.setBounds(100,310,200,30);
-        dashedLine.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        frame.add(dashedLine);
-
-        System.out.println("Final: ");
-        //System.out.println(thisSystem.toString());
+        System.out.println("Final System State: ");
+        System.out.println(thisSystem.toString());
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -622,8 +627,9 @@ public class Main {
 
 
     public static void main(String[] args) {
-        //CreateInitFrame();
+        CreateInitFrame();
 
+        /*
         FuzzyLogicSets set1= new FuzzyLogicSets("very_low","TRAP",new ArrayList<Integer>(Arrays.asList(0,0,10,30)));
         FuzzyLogicSets set2= new FuzzyLogicSets("low","TRAP",new ArrayList<Integer>(Arrays.asList(10,30,40,60)));
         FuzzyLogicSets set3= new FuzzyLogicSets("medium","TRAP",new ArrayList<Integer>(Arrays.asList(40,60,70,90)));
@@ -684,6 +690,6 @@ public class Main {
         system1.Fuzzification();
         system1.Inference();
         system1.Defuzzification();
-
+         */
     }
 }
