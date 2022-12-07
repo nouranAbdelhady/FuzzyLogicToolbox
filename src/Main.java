@@ -567,21 +567,17 @@ public class Main {
     public static void CreateRunFrame(FuzzyLogicSystem thisSystem){
         JFrame frame = new JFrame(thisSystem.name+" - Run");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(500,200);
+        frame.setSize(450,350);
 
         String outputMessage = thisSystem.Run();
         System.out.println("OUTPUT MESSAGE");
         System.out.println(outputMessage);
 
         JLabel OutputMessage = new JLabel();
-        OutputMessage.setText("<html>" + outputMessage.replaceAll("<","&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll("\n", "<br/>") + "</html>");
-        OutputMessage.setHorizontalAlignment(SwingConstants.CENTER);
-        OutputMessage.setVerticalAlignment(SwingConstants.CENTER);
+        OutputMessage.setText("<html>" + outputMessage.replaceAll("\n", "<br/>") + "</html>");
 
-        OutputMessage.setBounds(100,15,250,130);
-        OutputMessage.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        OutputMessage.setBounds(100,35,250,260);
+        OutputMessage.setFont(new Font("Times New Roman", Font.PLAIN, 15));
         frame.add(OutputMessage);
 
         //System.out.println("Final System State: ");
@@ -680,6 +676,8 @@ public class Main {
         //System.out.println(system1.Defuzzification());
 
         //CreateRunFrame(system1);
+
          */
+
     }
 }

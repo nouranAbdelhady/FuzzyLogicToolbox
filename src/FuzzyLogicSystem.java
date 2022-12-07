@@ -141,6 +141,7 @@ public class FuzzyLogicSystem {
         //System.out.println("=> done ");
     }
     public String Defuzzification(){
+        System.out.println("Defuzzification");
         //Calculate weighted average for "OUT" variables ; for EACH set
         for (FuzzyLogicVariable variable : variables) {
             if(variable.type.equals("OUT")){
@@ -167,11 +168,11 @@ public class FuzzyLogicSystem {
             }
         }
 
-        String returnString=null;
+        String returnString="";
         for (FuzzyLogicVariable variable:variables) {
             if(variable.type.equals("OUT")){
                 System.out.println("Variable: "+variable.name);
-                returnString = "The predicted " + (variable.name+" is: \n");
+                returnString += "The predicted " + (variable.name+" is: \n");
                 for (FuzzyLogicSets set: variable.sets) {
                     double setOutput= set.numerator/sumOfOutput;
                     System.out.print("Set name: "+set.name+" - ");
@@ -186,8 +187,8 @@ public class FuzzyLogicSystem {
     public String Run(){
         Fuzzification();
         Inference();
-        //Output returns string
-        return Defuzzification();
+        String defuzzificationString = Defuzzification();
+        return defuzzificationString;
     }
 
 }
