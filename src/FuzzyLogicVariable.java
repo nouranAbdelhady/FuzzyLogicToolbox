@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class FuzzyLogicVariable {
     String name;
-    String type;
+    String type;        //IN-OUT
     int lowerRange;
     int upperRange;
     ArrayList<FuzzyLogicSets> sets = new ArrayList<FuzzyLogicSets>();

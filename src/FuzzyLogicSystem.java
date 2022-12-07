@@ -1,17 +1,17 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class FuzzyLogicSystem {
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+    int id;
     String name;
     String description;
     ArrayList<FuzzyLogicVariable> variables = new ArrayList<FuzzyLogicVariable>();
     ArrayList<FuzzyLogicRule> rules = new ArrayList<FuzzyLogicRule>();
     ArrayList<FuzzyLogicCrispValues> crispValues = new ArrayList<FuzzyLogicCrispValues>();
 
-    double calculatedOutputValue;
-    String outputSet;
-    String outputName=null;
-
-    public FuzzyLogicSystem(String name, String description) {
+    public FuzzyLogicSystem(int id ,String name, String description) {
+        this.id=id;
         this.name = name;
         this.description = description;
     }
@@ -140,8 +140,7 @@ public class FuzzyLogicSystem {
         //return returnString;
         //System.out.println("=> done ");
     }
-    public double Defuzzification(){
-        String returnString="Defuzzification ";
+    public String Defuzzification(){
         //Calculate weighted average for "OUT" variables ; for EACH set
         for (FuzzyLogicVariable variable : variables) {
             if(variable.type.equals("OUT")){
@@ -152,7 +151,6 @@ public class FuzzyLogicSystem {
         }
 
         double sumOfOutput=0.0;
-        double numerator=0.0;
         //Substituting in the weighted average equation
         for (FuzzyLogicRule rule:rules) {
             sumOfOutput+=rule.calculatedOutput;
@@ -160,9 +158,8 @@ public class FuzzyLogicSystem {
                 if(variable.type.equals("OUT")){
                     for (FuzzyLogicSets set: variable.sets) {
                         if(rule.outputValue.equals(set.name)){
-                            this.outputName= variable.name;
-                            numerator+=(rule.calculatedOutput*set.weightedAverage);
-                            System.out.println(set.name+":"+rule.calculatedOutput+"*"+set.weightedAverage);
+                            set.numerator+=(rule.calculatedOutput*set.weightedAverage);
+                            //System.out.println(set.name+":"+rule.calculatedOutput+"*"+set.weightedAverage);
                             break;
                         }
                     }
@@ -170,19 +167,27 @@ public class FuzzyLogicSystem {
             }
         }
 
-        System.out.println(numerator+"/"+sumOfOutput);
-        this.calculatedOutputValue=numerator/sumOfOutput;
-        System.out.println("Calculated output: "+this.calculatedOutputValue);
-
-        returnString+="=> done";
-        //return returnString;
-        return this.calculatedOutputValue;
+        String returnString=null;
+        for (FuzzyLogicVariable variable:variables) {
+            if(variable.type.equals("OUT")){
+                System.out.println("Variable: "+variable.name);
+                returnString = "The predicted " + (variable.name+" is: \n");
+                for (FuzzyLogicSets set: variable.sets) {
+                    double setOutput= set.numerator/sumOfOutput;
+                    System.out.print("Set name: "+set.name+" - ");
+                    System.out.println(df.format(setOutput));
+                    returnString+=("\t"+set.name+": "+df.format(setOutput)+"\n");
+                }
+            }
+        }
+        return returnString;
     }
 
-    public void Run(){
+    public String Run(){
         Fuzzification();
         Inference();
-        Defuzzification();
+        //Output returns string
+        return Defuzzification();
     }
 
 }

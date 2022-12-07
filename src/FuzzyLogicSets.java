@@ -3,11 +3,16 @@ import java.util.Arrays;
 
 public class FuzzyLogicSets {
     String name;
-    String type;
+    String type;        //TRI-TRAP
     //x-coordinates
     ArrayList<Integer> values = new ArrayList<Integer>();
     ArrayList<Integer> y_coordinates;
     double weightedAverage=0;
+
+    //For OUTPUT variables ONLY
+    //Centroid*OutputOfRule
+    Double numerator=0.0;
+
     FuzzyLogicSets(String name,String type){
         this.name=name;
         this.type=type;
@@ -42,7 +47,6 @@ public class FuzzyLogicSets {
         weightedAverage=weightedAverage/ values.size();
     }
 
-
     public void addValue(Integer value){
         this.values.add(value);
     }
@@ -56,5 +60,4 @@ public class FuzzyLogicSets {
                 ", y_coordinates=" + y_coordinates + '\n' +
                 '}';
     }
-
 }
