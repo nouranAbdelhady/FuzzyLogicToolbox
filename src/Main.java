@@ -9,14 +9,6 @@ public class Main {
     static int fuzzySystemNumber=0;
     static ArrayList<FuzzyLogicSystem> systems = new ArrayList<FuzzyLogicSystem>();
     static Boolean addedVariable=false,addedSet=false,addedRule=false,addedCrisp=false;
-    public static FuzzyLogicSystem getSystemByName(String targetedName){
-        for (FuzzyLogicSystem system:systems) {
-            if (system.name.equals(targetedName)){
-                return system;
-            }
-        }
-        return null;
-    }
     public static void CreateInitFrame(){
         JFrame frame = new JFrame("Fuzzy Logic");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,9 +75,9 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
-                CreateMainMenu(fuzzySystemNumber,systemName.getText(),systemDescription.getText());
-                FuzzyLogicSystem newSystem = new FuzzyLogicSystem(systemName.getText(),systemDescription.getText());
+                FuzzyLogicSystem newSystem = new FuzzyLogicSystem(fuzzySystemNumber,systemName.getText(),systemDescription.getText());
                 systems.add(newSystem);
+                CreateMainMenu(newSystem);
                 frame.setVisible(false);
             }
         });
@@ -96,8 +88,8 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public static void CreateMainMenu(int SystemNo,String systemName,String SystemDescription){
-        JFrame frame = new JFrame(SystemNo+"."+systemName);
+    public static void CreateMainMenu(FuzzyLogicSystem thisSystem){
+        JFrame frame = new JFrame(thisSystem.id+"."+thisSystem.name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600,300);
 
@@ -108,8 +100,7 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
-                CreateVariableFrame(systemName);
-
+                CreateVariableFrame(thisSystem);
             }
         });
 
@@ -120,8 +111,7 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
-                CreateSetFrame(systemName);
-
+                CreateSetFrame(thisSystem);
             }
         });
 
@@ -132,8 +122,7 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
-                CreateRuleFrame(systemName);
-
+                CreateRuleFrame(thisSystem);
             }
         });
 
@@ -144,7 +133,7 @@ public class Main {
         {
             public void actionPerformed(ActionEvent e)
             {
-                CreateCrispFrame(systemName);
+                CreateCrispFrame(thisSystem);
             }
         });
 
@@ -153,9 +142,8 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public static void CreateVariableFrame(String systemName){
-        JFrame frame = new JFrame(systemName+" - Variable");
-        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+    public static void CreateVariableFrame(FuzzyLogicSystem thisSystem){
+        JFrame frame = new JFrame(thisSystem.name+" - Variable");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600,300);
 
@@ -226,9 +214,8 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public static void CreateSetFrame(String systemName){
-        JFrame frame = new JFrame(systemName+" - Set");
-        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+    public static void CreateSetFrame(FuzzyLogicSystem thisSystem){
+        JFrame frame = new JFrame(thisSystem.name+" - Set");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600,300);
 
@@ -331,9 +318,8 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public static void CreateRuleFrame(String systemName){
-        JFrame frame = new JFrame(systemName+" - Rule");
-        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+    public static void CreateRuleFrame(FuzzyLogicSystem thisSystem){
+        JFrame frame = new JFrame(thisSystem.name+" - Rule");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600,700);
 
@@ -483,9 +469,8 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public static void CreateCrispFrame(String systemName){
-        JFrame frame = new JFrame(systemName+" - Crisp");
-        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+    public static void CreateCrispFrame(FuzzyLogicSystem thisSystem){
+        JFrame frame = new JFrame(thisSystem.name+" - Crisp");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600,300);
 
@@ -538,7 +523,7 @@ public class Main {
                     //System.out.println(thisSystem.toString());
                 }
                 if(addedVariable&&addedSet&&addedRule&&addedCrisp){
-                    CreateRunFrame(systemName);
+                    CreateRunFrame(thisSystem);
                 }
                 else{
                     CreateErrorFrame();
@@ -568,7 +553,7 @@ public class Main {
                     addedCrisp=true;
                     //System.out.println(thisSystem.toString());
                 }
-                CreateCrispFrame(systemName);
+                CreateCrispFrame(thisSystem);
                 frame.setVisible(false);
             }
         });
@@ -579,25 +564,28 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public static void CreateRunFrame(String systemName){
-        JFrame frame = new JFrame(systemName+" - Run");
-        FuzzyLogicSystem thisSystem = getSystemByName(systemName);
+    public static void CreateRunFrame(FuzzyLogicSystem thisSystem){
+        JFrame frame = new JFrame(thisSystem.name+" - Run");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(500,200);
 
-        thisSystem.Run();
+        String outputMessage = thisSystem.Run();
+        System.out.println("OUTPUT MESSAGE");
+        System.out.println(outputMessage);
 
-        String outputMessage="Predicted ";
-        outputMessage+=thisSystem.outputName;
-        //outputMessage=outputMessage+" is "+thisSystem.outputSet;
-        outputMessage=outputMessage+": "+thisSystem.calculatedOutputValue;
-        JLabel OutputMessage = new JLabel(outputMessage);
-        OutputMessage.setBounds(100,55,250,130);
-        OutputMessage.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        JLabel OutputMessage = new JLabel();
+        OutputMessage.setText("<html>" + outputMessage.replaceAll("<","&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll("\n", "<br/>") + "</html>");
+        OutputMessage.setHorizontalAlignment(SwingConstants.CENTER);
+        OutputMessage.setVerticalAlignment(SwingConstants.CENTER);
+
+        OutputMessage.setBounds(100,15,250,130);
+        OutputMessage.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         frame.add(OutputMessage);
 
-        System.out.println("Final System State: ");
-        System.out.println(thisSystem.toString());
+        //System.out.println("Final System State: ");
+        //System.out.println(thisSystem.toString());
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -639,7 +627,7 @@ public class Main {
         variable1.sets=sets;
         FuzzyLogicCrispValues crips1 = new FuzzyLogicCrispValues(variable1,50);
 
-        FuzzyLogicSystem system1 = new FuzzyLogicSystem("System 1","Des 1");
+        FuzzyLogicSystem system1 = new FuzzyLogicSystem(1,"System 1","Des 1");
         system1.variables.add(variable1);
         system1.crispValues.add(crips1);
 
@@ -689,7 +677,9 @@ public class Main {
         systems.add(system1);
         system1.Fuzzification();
         system1.Inference();
-        system1.Defuzzification();
+        //System.out.println(system1.Defuzzification());
+
+        //CreateRunFrame(system1);
          */
     }
 }
