@@ -673,11 +673,9 @@ public class Main {
         systems.add(system1);
         system1.Fuzzification();
         system1.Inference();
-        //System.out.println(system1.Defuzzification());
+        System.out.println(system1.Defuzzification());
 
         //CreateRunFrame(system1);
-
          */
-
     }
 }

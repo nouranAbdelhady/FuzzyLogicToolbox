@@ -40,6 +40,7 @@ public class FuzzyLogicSets {
 
     public void calculateWeightedAverage(){
         //get sum of values
+        weightedAverage=0;
         for (double value:values) {
             weightedAverage+=value;
         }
