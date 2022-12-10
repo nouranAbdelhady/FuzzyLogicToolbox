@@ -613,7 +613,7 @@ public class Main {
     public static void main(String[] args) {
         CreateInitFrame();
 
-        /*
+
         FuzzyLogicSets set1= new FuzzyLogicSets("very_low","TRAP",new ArrayList<Integer>(Arrays.asList(0,0,10,30)));
         FuzzyLogicSets set2= new FuzzyLogicSets("low","TRAP",new ArrayList<Integer>(Arrays.asList(10,30,40,60)));
         FuzzyLogicSets set3= new FuzzyLogicSets("medium","TRAP",new ArrayList<Integer>(Arrays.asList(40,60,70,90)));
@@ -673,9 +673,9 @@ public class Main {
         systems.add(system1);
         system1.Fuzzification();
         system1.Inference();
-        System.out.println(system1.Defuzzification());
+        //System.out.println(system1.Defuzzification());
 
-        //CreateRunFrame(system1);
-         */
+        CreateRunFrame(system1);
+
     }
 }

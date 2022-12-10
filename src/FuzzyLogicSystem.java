@@ -163,7 +163,13 @@ public class FuzzyLogicSystem {
             }
         }
         String returnString = "";
+        double maximum;
+        String variableOutputSet;
+        double variableFinalOutput;
         for (FuzzyLogicVariable variable : variables) {
+            variableFinalOutput=0.0;
+            maximum=-1.0;
+            variableOutputSet = null;
             if (variable.type.equals("OUT")) {
                 //System.out.println("Variable: " + variable.name);
                 returnString += "The predicted " + (variable.name + " is: \n");
@@ -174,11 +180,20 @@ public class FuzzyLogicSystem {
                     }
                     else{
                        setOutput = set.numerator / variable.sumOfOutput;
+                       variableFinalOutput+=setOutput;
+                    }
+
+                    if(setOutput>maximum){
+                        maximum=setOutput;
+                        variableOutputSet=set.name;
                     }
                     //System.out.print("Set name: " + set.name + " - ");
                     //System.out.println(df.format(setOutput));
                     returnString += ("\t" + set.name + ": " + df.format(setOutput) + "\n");
                 }
+                variable.calculatedOutputValue=variableFinalOutput;
+                variable.outputSet=variableOutputSet;
+                returnString+=("Conclusion: "+df.format(variable.calculatedOutputValue)+" "+variable.outputSet);
             }
         }
         return returnString;

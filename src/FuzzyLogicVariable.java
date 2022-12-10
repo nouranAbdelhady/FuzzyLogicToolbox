@@ -10,6 +10,8 @@ public class FuzzyLogicVariable {
     //For OUTPUT variables ONLY
     //denominator of the weighted average equation
     double sumOfOutput=0.0;
+    String outputSet;
+    double calculatedOutputValue;
     public FuzzyLogicVariable(String name, String type, int lowerRange, int upperRange) {
         this.name = name;
         this.type = type;
