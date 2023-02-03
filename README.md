@@ -15,26 +15,26 @@ The Fuzzy Logic Toolbox is a graphical user interface (GUI) based application th
 ## Examples
 Here are some screenshots to help you get started with the Fuzzy Logic Toolbox:
 
-1. Define a new fuzzy logic system:
-   ![newsystem](images\InitFrame.png)
+# Define a new fuzzy logic system:
+   ![newsystem](InitFrame.png)
 
-2. Define the system's attributes
-   ![variable](images\MainMenuFrame.png)
+# Define the system's attributes
+   ![variable](MainMenuFrame.png)
 
-3. Define the system's variables:
-   ![variable](images\Input.png)
+# Define the system's variables:
+   ![variable](Input.png)
 
-4. Define the variable's sets:
-   ![variable](images\Set.png)
+# Define the variable's sets:
+   ![variable](Set.png)
  
-5. Define the input variables' crisp values:
-   ![crisp](images\Crisp.png)
+# Define the input variables' crisp values:
+   ![crisp](Crisp.png)
 
-6. Define the rules:
-   ![rule](images\Rule.png)
-
-7. Get the predicted output:
-   ![output](images\OutputFrame.png)
+# Define the rules:
+   ![rule](Rule.png)
+   
+# Get the predicted output:
+   ![output](OutputFrame.png)
 
 ## Validation
 The Fuzzy Logic Toolbox will not run unless everything has been inputted correctly. In case of incorrect inputs, an error message will be displayed.
