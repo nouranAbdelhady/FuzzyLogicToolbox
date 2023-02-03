@@ -675,7 +675,7 @@ public class Main {
         system1.Inference();
         //System.out.println(system1.Defuzzification());
 
-        CreateRunFrame(system1);
+        //CreateRunFrame(system1);
 
     }
 }
